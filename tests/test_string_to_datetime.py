@@ -375,3 +375,12 @@ def test_invalid_date_string3():
     """
     with raises(DatetimeParseError):
         string_to_datetime(date_string="abcdefghijklmn", format_string=YMD)
+
+
+def test_invalid_date_string4():
+    """
+    invalid date string4
+    :return:
+    """
+    with raises(DatetimeParseError):
+        string_to_datetime(date_string="", format_string=YMD)

@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Final
+from typing import Final, Optional
 
 HYPHEN_YMD: Final[str] = "%Y-%m-%d"
 HYPHEN_YMD_HMS: Final[str] = "%Y-%m-%d %H:%M:%S"
@@ -10,8 +10,8 @@ YMDHMS: Final[str] = "%Y%m%d%H%M%S"
 AWS_DATE_TIME_UTC: Final[str] = "%Y-%m-%dT%H:%M:%S.%fZ"
 AWS_DATE_TIME_JST: Final[str] = "%Y-%m-%dT%H:%M:%S+09"
 
-JST: timezone = timezone(timedelta(hours=+9), "JST")
-UTC: timezone = timezone(timedelta(0), "UTC")
+JST: Final[timezone] = timezone(timedelta(hours=+9), "JST")
+UTC: Final[timezone] = timezone(timedelta(hours=+0), "UTC")
 
 
 class DatetimeParseError(Exception):
@@ -73,24 +73,22 @@ def ymdhms_to_dt(date_string: str, tz=JST) -> datetime:
     return string_to_datetime(date_string=date_string, format_string=fmt, tz=tz)
 
 
-def aws_utc_to_dt(date_string: str, tz: timezone = UTC) -> datetime:
+def aws_to_dt(date_string: str) -> datetime:
     """
     "1970-12-31T12:34:56.789Z" → datetime(1970, 12, 31, 12, 34, 56, 789, timezone=UTC)
-    :param date_string:
-    :param tz: timezone
-    :return:
-    """
-    return string_to_datetime(date_string=date_string, format_string=AWS_DATE_TIME_UTC, tz=tz)
-
-
-def aws_jst_to_dt(date_string: str, tz: timezone = JST) -> datetime:
-    """
     "1970-12-31T12:34:56+09" → datetime(1970, 12, 31, 12, 34, 56, timezone=JST)
     :param date_string:
-    :param tz:
     :return:
     """
-    return string_to_datetime(date_string=date_string, format_string=AWS_DATE_TIME_JST, tz=tz)
+    tz: Optional[timezone] = None
+    fmt: Optional[str] = None
+    if date_string.endswith("Z"):
+        tz = UTC
+        fmt = AWS_DATE_TIME_UTC
+    if date_string.endswith("+09"):
+        tz = JST
+        fmt = AWS_DATE_TIME_JST
+    return string_to_datetime(date_string=date_string, format_string=fmt, tz=tz)
 
 
 def dt_to_string(dt: datetime, fmt: str) -> str:
