@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Final, Optional
+from typing import Final, List, Optional, Union
 
 HYPHEN_YMD: Final[str] = "%Y-%m-%d"
 HYPHEN_YMD_HMS: Final[str] = "%Y-%m-%d %H:%M:%S"
@@ -125,14 +125,126 @@ def get_jts_now() -> datetime:
     return datetime.now(tz=JST)
 
 
-# TODO: UTC to JST
-# TODO: add x days
-# TODO: add x hours
-# TODO: get weekday
-# TODO: unix time offset
-if __name__ == "__main__":
+def convert_tz_utc_jst(dt: datetime) -> datetime:
+    """
+    convert datetime timezone JST <--> UTC
+    :param dt:
+    :return:
+    """
+    if dt is None:
+        raise DatetimeParseError("dt is require")
+    if not isinstance(dt, datetime):
+        raise DatetimeParseError(f"dt must be a datetime, but {type(dt).__name__}")
+    tzinfo = dt.tzinfo
+    if tzinfo is None:
+        raise DatetimeParseError("dt must be a datetime with timezone")
+    if tzinfo == JST:
+        return dt.astimezone(tz=UTC)
+    elif tzinfo == UTC:
+        return dt.astimezone(tz=JST)
 
-    utc_now = get_utc_now()
-    jst_now = get_jts_now()
-    print(utc_now)
-    print(jst_now)
+
+def add_days(dt: datetime, days: int = 0):
+    """
+    add x days to datetime
+    :param dt:
+    :param days:
+    :return:
+    """
+    if dt is None:
+        raise DatetimeParseError("dt is require")
+    if days is None:
+        raise DatetimeParseError("days is require")
+
+    if not isinstance(dt, datetime):
+        raise DatetimeParseError("dt must be a datetime")
+    if not isinstance(days, int):
+        raise DatetimeParseError("days must be a int")
+    return dt + timedelta(days=days)
+
+
+def add_hours(dt: datetime, hours: int = 0):
+    """
+    add x hours to datetime
+    :param dt:
+    :param hours:
+    :return:
+    """
+    if dt is None:
+        raise DatetimeParseError("dt is require")
+    if hours is None:
+        raise DatetimeParseError("hours is require")
+
+    if not isinstance(dt, datetime):
+        raise DatetimeParseError("dt must be a datetime")
+    if not isinstance(hours, int):
+        raise DatetimeParseError("days must be a int")
+    return dt + timedelta(hours=hours)
+
+
+def weekday_index(dt: datetime) -> int:
+    """
+    0: Monday, 1: Tuesday, ..., 6: Sunday
+    :param dt:
+    :return:
+    """
+    if dt is None:
+        raise DatetimeParseError("dt is require")
+    if not isinstance(dt, datetime):
+        raise DatetimeParseError("dt must be a datetime")
+    return dt.weekday()
+
+
+def weekday_name_en(dt: datetime):
+    """
+    get Weekday name in English
+    :param dt:
+    :return:
+    """
+    names: List[str] = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ]
+    return names[weekday_index(dt)]
+
+
+def weekday_name_jp(dt: datetime):
+    """
+    get Weekday name in Japanese
+    :param dt:
+    :return:
+    """
+    names: List[str] = ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"]
+    return names[weekday_index(dt)]
+
+
+def dt_to_unix_time(dt: datetime) -> float:
+    """
+    get Unix time from datetime
+    :param dt:
+    :return:
+    """
+    if dt is None:
+        raise DatetimeParseError("dt is require")
+    if not isinstance(dt, datetime):
+        raise DatetimeParseError("dt must be a datetime")
+    return dt.timestamp()
+
+
+def unix_time_to_dt(ut: Union[float, int], tz=JST) -> datetime:
+    """
+    get datetime from Unix time
+    :param ut:
+    :param tz:
+    :return:
+    """
+    if ut is None:
+        raise DatetimeParseError("ut is require")
+    if not isinstance(ut, float) and not isinstance(ut, int):
+        raise DatetimeParseError("ut must be a float or int")
+    return datetime.fromtimestamp(ut).replace(tzinfo=tz)
