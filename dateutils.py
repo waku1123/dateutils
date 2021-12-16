@@ -26,16 +26,16 @@ def string_to_datetime(date_string: str, format_string: str, tz: timezone = JST)
     if tz is None:
         raise DatetimeParseError("tz is require")
 
-    if not isinstance(date_string, str):
-        raise TypeError("date_string must be a string")
-    if not isinstance(format_string, str):
-        raise TypeError("format_string must be a string")
-    if not isinstance(tz, timezone):
-        raise TypeError("tz must be a timezone")
-
     try:
-        return datetime.strptime(date_string=date_string, format=format_string).replace(tzinfo=tz)
-    except ValueError as e:
+        if not isinstance(date_string, str):
+            raise TypeError(f"date_string must be a string, but {type(date_string).__name__}")
+        if not isinstance(format_string, str):
+            raise TypeError(f"format_string must be a string, but {type(format_string).__name__}")
+        if not isinstance(tz, timezone):
+            raise TypeError(f"tz must be a timezone, but {type(tz).__name__}")
+
+        return datetime.strptime(date_string, format_string).replace(tzinfo=tz)
+    except (ValueError, TypeError) as e:
         raise DatetimeParseError(f"{e}")
 
 
