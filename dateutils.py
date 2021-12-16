@@ -10,8 +10,22 @@ YMDHMS: Final[str] = "%Y%m%d%H%M%S"
 AWS_DATE_TIME_UTC: Final[str] = "%Y-%m-%dT%H:%M:%S.%fZ"
 AWS_DATE_TIME_JST: Final[str] = "%Y-%m-%dT%H:%M:%S+09"
 
+# 日本標準時
 JST: Final[timezone] = timezone(timedelta(hours=+9), "JST")
+# 東ヨーロッパ時間
+EET: Final[timezone] = timezone(timedelta(hours=+2), "EET")
+# 中央ヨーロッパ時間
+CET: Final[timezone] = timezone(timedelta(hours=+1), "CET")
+# 協定世界時
 UTC: Final[timezone] = timezone(timedelta(hours=+0), "UTC")
+# 東部標準時
+EST: Final[timezone] = timezone(timedelta(hours=-5), "EST")
+# 中部標準時
+CST: Final[timezone] = timezone(timedelta(hours=-6), "CST")
+# 山岳部標準時
+MST: Final[timezone] = timezone(timedelta(hours=-7), "MST")
+# 太平洋標準時
+PST: Final[timezone] = timezone(timedelta(hours=-8), "PST")
 
 
 class DatetimeParseError(Exception):
