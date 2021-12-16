@@ -102,6 +102,8 @@ def dt_to_string(dt: datetime, fmt: str) -> str:
         raise DatetimeParseError("dt is require")
     if fmt is None:
         raise DatetimeParseError("fmt is require")
+    if not isinstance(dt, datetime):
+        raise DatetimeParseError("dt must be a datetime")
     if not isinstance(fmt, str):
         raise DatetimeParseError("fmt must be a string")
     return dt.strftime(fmt)
