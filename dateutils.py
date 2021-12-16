@@ -80,6 +80,12 @@ def aws_to_dt(date_string: str) -> datetime:
     :param date_string:
     :return:
     """
+    if date_string is None:
+        raise DatetimeParseError("date_string is require")
+    if not isinstance(date_string, str):
+        raise DatetimeParseError("date_string must be a string")
+    if date_string == "":
+        raise DatetimeParseError("date_string is empty")
     tz: Optional[timezone] = None
     fmt: Optional[str] = None
     if date_string.endswith("Z"):
@@ -142,9 +148,11 @@ def convert_tz_utc_jst(dt: datetime) -> datetime:
         return dt.astimezone(tz=UTC)
     elif tzinfo == UTC:
         return dt.astimezone(tz=JST)
+    else:
+        raise DatetimeParseError("dt must be a datetime with timezone UTC or JST")
 
 
-def add_days(dt: datetime, days: int = 0):
+def add_days(dt: datetime, days: int = 0) -> datetime:
     """
     add x days to datetime
     :param dt:
@@ -163,7 +171,7 @@ def add_days(dt: datetime, days: int = 0):
     return dt + timedelta(days=days)
 
 
-def add_hours(dt: datetime, hours: int = 0):
+def add_hours(dt: datetime, hours: int = 0) -> datetime:
     """
     add x hours to datetime
     :param dt:
@@ -178,7 +186,7 @@ def add_hours(dt: datetime, hours: int = 0):
     if not isinstance(dt, datetime):
         raise DatetimeParseError("dt must be a datetime")
     if not isinstance(hours, int):
-        raise DatetimeParseError("days must be a int")
+        raise DatetimeParseError("hours must be a int")
     return dt + timedelta(hours=hours)
 
 
@@ -195,7 +203,7 @@ def weekday_index(dt: datetime) -> int:
     return dt.weekday()
 
 
-def weekday_name_en(dt: datetime):
+def weekday_name_en(dt: datetime) -> str:
     """
     get Weekday name in English
     :param dt:
@@ -213,7 +221,7 @@ def weekday_name_en(dt: datetime):
     return names[weekday_index(dt)]
 
 
-def weekday_name_jp(dt: datetime):
+def weekday_name_jp(dt: datetime) -> str:
     """
     get Weekday name in Japanese
     :param dt:
@@ -236,7 +244,7 @@ def dt_to_unix_time(dt: datetime) -> float:
     return dt.timestamp()
 
 
-def unix_time_to_dt(ut: Union[float, int], tz=JST) -> datetime:
+def unix_time_to_dt(ut: Union[float, int], tz: timezone = JST) -> datetime:
     """
     get datetime from Unix time
     :param ut:
@@ -245,6 +253,10 @@ def unix_time_to_dt(ut: Union[float, int], tz=JST) -> datetime:
     """
     if ut is None:
         raise DatetimeParseError("ut is require")
+    if tz is None:
+        raise DatetimeParseError("tz is require")
     if not isinstance(ut, float) and not isinstance(ut, int):
         raise DatetimeParseError("ut must be a float or int")
+    if not isinstance(tz, timezone):
+        raise DatetimeParseError("tz must be a timezone")
     return datetime.fromtimestamp(ut).replace(tzinfo=tz)
