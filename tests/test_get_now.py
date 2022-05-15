@@ -1,8 +1,6 @@
-import sys
 from datetime import datetime
 
-sys.path.append("../dateutils/")
-from utils.dateutils import JST, UTC, get_jts_now, get_utc_now
+from libs.dateutils import JST, UTC, get_jts_now, get_utc_now
 
 
 def test_get_utc_now():

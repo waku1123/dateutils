@@ -1,10 +1,8 @@
-import sys
 from datetime import datetime
 
 from pytest import raises
 
-sys.path.append("../dateutils/")
-from utils.dateutils import JST, UTC, DatetimeParseError, aws_to_dt, ymd_to_dt, ymdhms_to_dt
+from libs.dateutils import JST, UTC, DatetimeParseError, aws_to_dt, ymd_to_dt, ymdhms_to_dt
 
 
 def test_hyphen():

@@ -1,12 +1,20 @@
-import sys
 from datetime import datetime
 
 from pytest import raises
 
-sys.path.append("../dateutils/")
-from utils.dateutils import (AWS_DATE_TIME_JST, AWS_DATE_TIME_UTC, HYPHEN_YMD,
-                             HYPHEN_YMD_HMS, JST, SLASH_YMD, SLASH_YMD_HMS,
-                             YMD, YMDHMS, DatetimeParseError, dt_to_string)
+from libs.dateutils import (
+    AWS_DATE_TIME_JST,
+    AWS_DATE_TIME_UTC,
+    HYPHEN_YMD,
+    HYPHEN_YMD_HMS,
+    JST,
+    SLASH_YMD,
+    SLASH_YMD_HMS,
+    YMD,
+    YMDHMS,
+    DatetimeParseError,
+    dt_to_string,
+)
 
 dt: datetime = datetime(1970, 1, 1, 0, 0, 0, tzinfo=JST)
 
