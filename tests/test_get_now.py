@@ -1,13 +1,8 @@
 import sys
 from datetime import datetime
 
-from pytest import raises
-
 sys.path.append("../dateutils/")
-from utils.dateutils import (AWS_DATE_TIME_JST, AWS_DATE_TIME_UTC, HYPHEN_YMD,
-                             HYPHEN_YMD_HMS, JST, SLASH_YMD, SLASH_YMD_HMS,
-                             UTC, YMD, YMDHMS, DatetimeParseError, get_jts_now,
-                             get_utc_now)
+from utils.dateutils import JST, UTC, get_jts_now, get_utc_now
 
 
 def test_get_utc_now():

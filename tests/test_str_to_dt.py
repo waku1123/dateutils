@@ -4,10 +4,7 @@ from datetime import datetime
 from pytest import raises
 
 sys.path.append("../dateutils/")
-from utils.dateutils import (AWS_DATE_TIME_JST, AWS_DATE_TIME_UTC, HYPHEN_YMD,
-                             HYPHEN_YMD_HMS, JST, SLASH_YMD, SLASH_YMD_HMS,
-                             UTC, YMD, YMDHMS, DatetimeParseError, aws_to_dt,
-                             ymd_to_dt, ymdhms_to_dt)
+from utils.dateutils import JST, UTC, DatetimeParseError, aws_to_dt, ymd_to_dt, ymdhms_to_dt
 
 
 def test_hyphen():
