@@ -1,10 +1,8 @@
-import sys
 from datetime import datetime
 
 from pytest import raises
 
-sys.path.append("../dateutils/")
-from dateutils import (
+from libs.dateutils import (
     AWS_DATE_TIME_JST,
     AWS_DATE_TIME_UTC,
     HYPHEN_YMD,
